@@ -1413,6 +1413,7 @@ restangular.provider('Restangular', function() {
         serv.getList = _bind(collection.getList, collection);
         serv.get = _bind(collection.get, collection);
         serv.all = _bind(collection.all, collection);
+        serv.customGETLIST = _bind(collection.customGETLIST, collection);
         serv.withHttpConfig = _bind(collection.withHttpConfig, collection);
 
         for (var prop in collection) {
