@@ -124,15 +124,9 @@ restangular.provider('Restangular', function() {
 
     var absolutePattern = /^https?:\/\//i;
     config.isAbsoluteUrl = function(string) {
-      return angular.isUndefined(config.absoluteUrl) || config.absoluteUrl === null ?
-      string && absolutePattern.test(string) :
-        config.absoluteUrl;
+      return string && absolutePattern.test(string);
     };
 
-    config.absoluteUrl = angular.isUndefined(config.absoluteUrl) ? true : config.absoluteUrl;
-    object.setSelfLinkAbsoluteUrl = function(value) {
-      config.absoluteUrl = value;
-    };
     /**
      * This is the BaseURL to be used with Restangular
      */
@@ -756,7 +750,7 @@ restangular.provider('Restangular', function() {
           if (__this.config.isAbsoluteUrl(elemSelfLink)) {
             return elemSelfLink;
           } else {
-            elemUrl = elemSelfLink;
+            elemUrl = elemSelfLink.charAt(0) == "/" ? elemSelfLink.substr(1) : elemSelfLink;
           }
         } else {
           elemUrl = elem[__this.config.restangularFields.route];
