@@ -746,40 +746,39 @@ restangular.provider('Restangular', function() {
       return  this.parentsArray(current).reduce(function(acum, elem) {
         var elemUrl;
         var elemSelfLink = __this.config.getUrlFromElem(elem);
+
         if (elemSelfLink) {
           if (__this.config.isAbsoluteUrl(elemSelfLink)) {
             return elemSelfLink;
-          } else {
-            elemUrl = elemSelfLink.charAt(0) == "/" ? elemSelfLink.substr(1) : elemSelfLink;
+          }
+          return __this.config.baseUrl + elemSelfLink;
+        }
+
+        elemUrl = elem[__this.config.restangularFields.route];
+
+        if (elem[__this.config.restangularFields.restangularCollection]) {
+          var ids = elem[__this.config.restangularFields.ids];
+          if (ids) {
+            elemUrl += '/' + ids.join(',');
           }
         } else {
-          elemUrl = elem[__this.config.restangularFields.route];
-
-          if (elem[__this.config.restangularFields.restangularCollection]) {
-            var ids = elem[__this.config.restangularFields.ids];
-            if (ids) {
-              elemUrl += '/' + ids.join(',');
-            }
+          var elemId;
+          if (__this.config.useCannonicalId) {
+            elemId = __this.config.getCannonicalIdFromElem(elem);
           } else {
-            var elemId;
-            if (__this.config.useCannonicalId) {
-              elemId = __this.config.getCannonicalIdFromElem(elem);
-            } else {
-              elemId = __this.config.getIdFromElem(elem);
-            }
+            elemId = __this.config.getIdFromElem(elem);
+          }
 
-            if (config.isValidId(elemId) && !elem.singleOne) {
-              elemUrl += '/' + (__this.config.encodeIds ? encodeURIComponent(elemId) : elemId);
-            }
+          if (config.isValidId(elemId) && !elem.singleOne) {
+            elemUrl += '/' + (__this.config.encodeIds ? encodeURIComponent(elemId) : elemId);
           }
         }
+
         acum = acum.replace(/\/$/, '') + '/' + elemUrl;
         return __this.normalizeUrl(acum);
 
       }, this.config.baseUrl);
     };
-
-
 
     Path.prototype.fetchUrl = function(current, what) {
       var baseUrl = this.base(current);
