@@ -751,6 +751,11 @@ restangular.provider('Restangular', function() {
           if (__this.config.isAbsoluteUrl(elemSelfLink)) {
             return elemSelfLink;
           }
+          
+          if (elemSelfLink.charAt(0) !== "/") {
+            elemSelfLink = '/' + elemSelfLink;
+          }
+          
           return __this.config.baseUrl + elemSelfLink;
         }
 
